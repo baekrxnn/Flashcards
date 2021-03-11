@@ -20,6 +20,11 @@ class ViewController: UIViewController {
     @IBAction func didTapOnFlashcard(_ sender: Any) {
         question.isHidden = true
     }
+    
+    func updateFlashcard(newQuestion: String, newAnswer: String) {
+        question.text = newQuestion
+        answer.text = newAnswer
+    }
 }
 
 
