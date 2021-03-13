@@ -24,18 +24,11 @@ class CreationViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let navigationController = segue.destination as! UINavigationController
-        let creationController = navigationController.topViewController as! CreationViewController
-        creationController.flashcardsController = self
-    }
     
     
     @IBAction func didTapOnDone(_ sender: Any) {
         let questionText = questionTextField.text
         let answerText = answerTextField.text
-        print("tapped", questionText!, answerText!)
-//        flashcardsController.updateFlashcard(newQuestion: "hello", newAnswer: "hi")
         flashcardsController.updateFlashcard(newQuestion: questionText!, newAnswer: answerText!)
         
         dismiss(animated: true)
