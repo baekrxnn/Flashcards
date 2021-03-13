@@ -8,7 +8,7 @@
 `TODO://` Add app description
 
 ### App Walk-though
-<img src="https://i.imgur.com/JkBtvsA.gif" width=200><br>
+<img src="https://i.imgur.com/jgt4Spa.gif" width=200><br>
 
 
 ## Required
