@@ -7,10 +7,18 @@
 
 import UIKit
 
+struct Flashcard {
+    var question: String
+    var answer: String
+}
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var answer: UILabel!
     @IBOutlet weak var question: UILabel!
+    
+    var cardStack = [Flashcard]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -18,12 +26,21 @@ class ViewController: UIViewController {
 
 
     @IBAction func didTapOnFlashcard(_ sender: Any) {
-        question.isHidden = true
+        if question.isHidden == false {
+            question.isHidden = true
+        } else {
+            question.isHidden = false
+        }
     }
     
     func updateFlashcard(newQuestion: String, newAnswer: String) {
-        question.text = newQuestion
-        answer.text = newAnswer
+        // make a new flashcard
+        let newFlashcard = Flashcard(question: newQuestion, answer: newAnswer)
+        question.text = newFlashcard.question
+        answer.text = newFlashcard.answer
+        // add it to the array of flashcards (the cardStack)
+        cardStack.append(newFlashcard)
+        // un-hide the question view so that we can see the question again
         question.isHidden = false
     }
     
