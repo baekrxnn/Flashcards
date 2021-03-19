@@ -5,10 +5,10 @@
 ## Lab 2
 
 ### App Description
-`TODO://` Add app description
+An iOS app that allows users to make flashcards (to study)
 
 ### App Walk-though
-<img src="https://i.imgur.com/RYz1G9z.gif" width=200><br>
+<img src="https://i.imgur.com/L2GuGyq.gif" width=200><br>
 
 ## Required
 - [x] User can browse through multiple flashcards
