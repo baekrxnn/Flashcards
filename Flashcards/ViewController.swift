@@ -39,7 +39,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        updateFlashcard(newQuestion: "1+\"1\"=?", newAnswer: "\"11\"")
+        // read saved flashcards
+        readSavedFlashcards()
+        // if needed, add initial card
+        if (cardStack.count == 0) {
+            updateFlashcard(newQuestion: "1+\"1\"=?", newAnswer: "\"11\"")
+        } else {
+            updateLabels()
+            updateNextPrevButtons()
+        }
     }
 
     func updateNextPrevButtons() {
@@ -85,6 +93,8 @@ class ViewController: UIViewController {
         question.isHidden = false
         // update buttons
         updateNextPrevButtons()
+        // save the stack
+        saveAllFlashcardsToDisk()
     }
     
     func updateLabels() {
@@ -95,6 +105,29 @@ class ViewController: UIViewController {
         answer.text = currentFlashcard.answer
         // make the question show up first
         question.isHidden = false
+    }
+    
+    func saveAllFlashcardsToDisk() {
+        // from Flashcard array to dictionary
+        let dictionaryArray = cardStack.map { (card) -> [String:String] in
+            return ["question": card.question, "answer": card.answer]
+        }
+        // save to disk
+        UserDefaults.standard.set(dictionaryArray, forKey: "Flashcards")
+        // for sanity
+        print("saved")
+    }
+    
+    func readSavedFlashcards() {
+        // if there are any saved cards, read them first
+        if let dictionaryArray = UserDefaults.standard.array(forKey: "Flashcards") as? [[String: String]] {
+            // if we're here, we know for sure we have saved flashcards
+            let savedCards = dictionaryArray.map { (dictionary) -> Flashcard in
+                return Flashcard(question: dictionary["question"]!, answer: dictionary["answer"]!)
+            }
+            // put the cards into our array
+            cardStack.append(contentsOf: savedCards)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
