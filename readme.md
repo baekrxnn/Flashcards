@@ -2,7 +2,7 @@
 
 📝 `NOTE` Paste this template at the top of your existing `README.md` file from the last lab.
 
-## Lab 2
+## Lab 3
 
 ### App Description
 An iOS app that allows users to make flashcards (to study)
