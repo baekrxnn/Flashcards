@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var prevButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     
+    @IBOutlet weak var deleteButton: UIButton!
+    
     @IBAction func didTapOnPrev(_ sender: Any) {
         currentIndex -= 1
         updateLabels()
@@ -44,6 +46,7 @@ class ViewController: UIViewController {
         // if needed, add initial card
         if (cardStack.count == 0) {
             updateFlashcard(newQuestion: "1+\"1\"=?", newAnswer: "\"11\"")
+            currentIndex = 0
         } else {
             updateLabels()
             updateNextPrevButtons()
@@ -52,25 +55,21 @@ class ViewController: UIViewController {
 
     func updateNextPrevButtons() {
         // disable the next button if we are at the last card in the array
-        if (currentIndex == cardStack.count-1) {
-            nextButton.isEnabled = false
-        } else {
-            nextButton.isEnabled = true
-        }
+        nextButton.isEnabled = (currentIndex == cardStack.count-1 ? false : true)
         
         // disable the prev button if we are at the first card in the array
-        if (currentIndex == 0) {
-            prevButton.isEnabled = false
-        } else {
-            prevButton.isEnabled = true
-        }
+        prevButton.isEnabled = (currentIndex == 0 ? false : true)
     }
 
     @IBAction func didTapOnFlashcard(_ sender: Any) {
-        if question.isHidden == false {
-            question.isHidden = true
+        // hide and unhide by doing the opposite of itself
+        question.isHidden = !question.isHidden
+        // hide the delete button if we're in the answer label
+        if cardStack.count == 1 {
+            deleteButton.isHidden = true
         } else {
-            question.isHidden = false
+            deleteButton.isHidden = (question.isHidden ? true : false)
+            // same as doing deleteButton.isHidden = question.isHidden
         }
     }
     
@@ -84,9 +83,6 @@ class ViewController: UIViewController {
         } else {
             currentIndex += 1
         }
-//        print("flashcard added")
-//        print("there are now \(cardStack.count) flashcards in the stack")
-//        print("current index: \(currentIndex)")
         // update labels
         updateLabels()
         // un-hide the question view so that we can see the question again
@@ -98,6 +94,8 @@ class ViewController: UIViewController {
     }
     
     func updateLabels() {
+        // hide the delete button if we only have one card
+        deleteButton.isHidden = (cardStack.count == 1 ? true : false)
         // get the current card
         let currentFlashcard = cardStack[currentIndex]
         // actually update them
@@ -128,6 +126,40 @@ class ViewController: UIViewController {
             // put the cards into our array
             cardStack.append(contentsOf: savedCards)
         }
+    }
+    
+    @IBAction func didTapOnDelete(_ sender: Any) {
+        if cardStack.count > 1 { // not allowed if we only have 1 flashcard
+            // show alert for confirmation
+            let alert = UIAlertController(title: "Delete flashcard", message: "Are you sure you want to delete it?", preferredStyle: .actionSheet)
+            // delete option
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) {
+                action in self.deleteCurrentFlashcard()
+            }
+            // cancel delete option
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            // add the options
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            // actually show the alert
+            present(alert, animated: true)
+        }
+    }
+    func deleteCurrentFlashcard() {
+        // remove the current card
+        cardStack.remove(at: currentIndex)
+        // check if we deleted the last card and update the index
+        if currentIndex > cardStack.count - 1 {
+            currentIndex = cardStack.count - 1
+        }
+        if cardStack.count == 0 {
+            currentIndex = 0
+        }
+        print(currentIndex)
+        // update everything
+        updateLabels()
+        updateNextPrevButtons()
+        saveAllFlashcardsToDisk()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -36,6 +36,14 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lvM-7f-XYB">
+                                        <rect key="frame" x="8" y="8" width="30" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="❌"/>
+                                        <connections>
+                                            <action selector="didTapOnDelete:" destination="BYZ-38-t0r" eventType="touchUpInside" id="P1a-UD-MBo"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <gestureRecognizers/>
@@ -76,6 +84,7 @@
                     </view>
                     <connections>
                         <outlet property="answer" destination="RIC-dP-9WA" id="3ux-v6-C0c"/>
+                        <outlet property="deleteButton" destination="lvM-7f-XYB" id="69A-PN-cW6"/>
                         <outlet property="nextButton" destination="9Uw-nN-ero" id="246-mb-wUP"/>
                         <outlet property="prevButton" destination="goa-vc-qvN" id="vSb-UA-OGD"/>
                         <outlet property="question" destination="e6y-tx-soB" id="0m0-nm-JdS"/>
