@@ -34,6 +34,13 @@ class ViewController: UIViewController {
         updateNextPrevButtons()
     }
     
+    func updateNextPrevButtons() {
+        // disable the next button if we are at the last card in the array
+        nextButton.isEnabled = (currentIndex == cardStack.count-1 ? false : true)
+        
+        // disable the prev button if we are at the first card in the array
+        prevButton.isEnabled = (currentIndex == 0 ? false : true)
+    }
     
     var cardStack = [Flashcard]()
     var currentIndex = 0
@@ -53,14 +60,6 @@ class ViewController: UIViewController {
         }
     }
 
-    func updateNextPrevButtons() {
-        // disable the next button if we are at the last card in the array
-        nextButton.isEnabled = (currentIndex == cardStack.count-1 ? false : true)
-        
-        // disable the prev button if we are at the first card in the array
-        prevButton.isEnabled = (currentIndex == 0 ? false : true)
-    }
-
     @IBAction func didTapOnFlashcard(_ sender: Any) {
         // hide and unhide by doing the opposite of itself
         question.isHidden = !question.isHidden
@@ -77,12 +76,14 @@ class ViewController: UIViewController {
         // make a new flashcard
         let newFlashcard = Flashcard(question: newQuestion, answer: newAnswer)
         // add it to the array of flashcards (the cardStack)
-        cardStack.append(newFlashcard)
-        if cardStack.count == 1 {
-            currentIndex = 0
-        } else {
-            currentIndex += 1
-        }
+//        cardStack.append(newFlashcard)
+        cardStack.insert(newFlashcard, at: currentIndex+1)
+        currentIndex += 1
+//        if cardStack.count == 1 {
+//            currentIndex = 0
+//        } else {
+//            currentIndex += 1
+//        }
         // update labels
         updateLabels()
         // un-hide the question view so that we can see the question again
@@ -145,6 +146,7 @@ class ViewController: UIViewController {
             present(alert, animated: true)
         }
     }
+    
     func deleteCurrentFlashcard() {
         // remove the current card
         cardStack.remove(at: currentIndex)
@@ -152,9 +154,10 @@ class ViewController: UIViewController {
         if currentIndex > cardStack.count - 1 {
             currentIndex = cardStack.count - 1
         }
-        if cardStack.count == 0 {
-            currentIndex = 0
-        }
+        // deleting the only card in the stack is no longer allowed
+//        if cardStack.count == 0 {
+//            currentIndex = 0
+//        }
         print(currentIndex)
         // update everything
         updateLabels()
