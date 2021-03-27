@@ -28,12 +28,14 @@ class ViewController: UIViewController {
     
     @IBAction func didTapOnPrev(_ sender: Any) {
         currentIndex -= 1
-        updateLabels()
+        animateCardOut(button: "prev")
+//        updateLabels()
         updateNextPrevButtons()
     }
     @IBAction func didTapOnNext(_ sender: Any) {
         currentIndex += 1
-        updateLabels()
+        animateCardOut(button: "next")
+//        updateLabels()
         updateNextPrevButtons()
     }
     
@@ -78,6 +80,7 @@ class ViewController: UIViewController {
 //            // same as doing deleteButton.isHidden = question.isHidden
 //        }
         UIView.transition(with: card, duration: 0.3, options: .transitionFlipFromRight) {
+            // these are the things we do during the transition
             // hide and unhide by doing the opposite of itself
             self.question.isHidden = !self.question.isHidden
             // hide the delete button if we're in the answer label
@@ -123,6 +126,35 @@ class ViewController: UIViewController {
         answer.text = currentFlashcard.answer
         // make the question show up first
         question.isHidden = false
+    }
+    
+    func animateCardOut(button: String) {
+        UIView.animate(withDuration: 0.2) {
+            // start sliding towards the next card
+            if button == "next" {
+                self.card.transform = CGAffineTransform.identity.translatedBy(x: -300.0, y: 0.0)
+            } else {
+                self.card.transform = CGAffineTransform.identity.translatedBy(x: 300.0, y: 0.0)
+            }
+        } completion: { (finished) in
+            // update the labels
+            self.updateLabels()
+            // get the next card to show up
+            self.animateCardIn(button: button)
+        }
+    }
+    
+    func animateCardIn(button: String) {
+        // start on the correct side but without animation
+        if button == "next" {
+            card.transform = CGAffineTransform.identity.translatedBy(x: 300.0, y: 0.0)
+        } else {
+            card.transform = CGAffineTransform.identity.translatedBy(x: -300.0, y: 0.0)
+        }
+        // animate card going back to original position
+        UIView.animate(withDuration: 0.2) {
+            self.card.transform = CGAffineTransform.identity
+        }
     }
     
     func saveAllFlashcardsToDisk() {
