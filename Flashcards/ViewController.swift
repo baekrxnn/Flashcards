@@ -14,6 +14,9 @@ struct Flashcard {
 
 class ViewController: UIViewController {
 
+    // the card container view for the question and answer labels
+    @IBOutlet weak var card: UIView!
+    // the actual labels
     @IBOutlet weak var answer: UILabel!
     @IBOutlet weak var question: UILabel!
     
@@ -61,15 +64,31 @@ class ViewController: UIViewController {
     }
 
     @IBAction func didTapOnFlashcard(_ sender: Any) {
-        // hide and unhide by doing the opposite of itself
-        question.isHidden = !question.isHidden
-        // hide the delete button if we're in the answer label
-        if cardStack.count == 1 {
-            deleteButton.isHidden = true
-        } else {
-            deleteButton.isHidden = (question.isHidden ? true : false)
-            // same as doing deleteButton.isHidden = question.isHidden
+        flipFlashcard()
+    }
+    
+    func flipFlashcard() {
+//        // hide and unhide by doing the opposite of itself
+//        question.isHidden = !question.isHidden
+//        // hide the delete button if we're in the answer label
+//        if cardStack.count == 1 {
+//            deleteButton.isHidden = true
+//        } else {
+//            deleteButton.isHidden = (question.isHidden ? true : false)
+//            // same as doing deleteButton.isHidden = question.isHidden
+//        }
+        UIView.transition(with: card, duration: 0.3, options: .transitionFlipFromRight) {
+            // hide and unhide by doing the opposite of itself
+            self.question.isHidden = !self.question.isHidden
+            // hide the delete button if we're in the answer label
+            if self.cardStack.count == 1 {
+                self.deleteButton.isHidden = true
+            } else {
+                self.deleteButton.isHidden = (self.question.isHidden ? true : false)
+                // same as doing deleteButton.isHidden = question.isHidden
+            }
         }
+
     }
     
     func updateFlashcard(newQuestion: String, newAnswer: String) {
